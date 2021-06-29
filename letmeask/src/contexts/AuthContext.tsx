@@ -76,6 +76,9 @@ useEffect - dispara uma determinada função sempre que "algo" acontecer.
  recebe uma função e em seguida um array onde definimos o que ficaremos observando
  a fim de decidir quando a função será chamada.
  Se desejarmos que o useEffect seja disparado uma única vez basta deixar o array vazio.
+Caso exista a possibilidade do usuário acessar outra sala inserindo o link manualmente
+se não tivermos nenhuma variável para ser monitorada no useEffect, ele não será 
+executado no carregamento da nova página!
 
  arrow functions - ()=> {}
 

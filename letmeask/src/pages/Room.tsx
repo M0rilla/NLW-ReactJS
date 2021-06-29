@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { FormEvent, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -10,6 +11,31 @@ import { database } from '../services/firebase';
 
 import '../styles/room.scss'
 
+type FirebaseQuestions = Record<string, {
+  author: {
+  name: string;
+  avatar: string;
+  }
+  content: string;
+  isAnswered: boolean;
+  isHighLighted: boolean;
+}>
+
+/* para declararmos a tipagem de um objeto no typescript precisamos usar o Record<>
+que assume a posição de um objeto e dentro dele passamos o tipo da chave e seu valor
+que neste caso era outro objeto; */
+
+type Question = {
+  id: string;
+  author: {
+    name: string;
+    avatar: string;
+    }
+    content: string;
+    isAnswered: boolean;
+    isHighLighted: boolean;
+}
+
 type RoomParams = {
   id: string;
 }
@@ -18,8 +44,52 @@ export function Room() {
 const { user } = useAuth();
 const params = useParams<RoomParams>();
 const [newQuestion, setNewQuestion] = useState('');
+const [questions, setQuestions] = useState<Question[]>([]);
+/* nosso estado armazena um tipo genérico -> array de questions, é importante atribuirmos um tipo */
+const [title, setTitle] = useState('');
 
 const roomId = params.id;
+
+useEffect(()=> {
+  const roomRef = database.ref(`rooms/${roomId}`);
+
+  roomRef.on('value', room =>{
+    // console.log(room); DataSnapshot
+    const databaseRoom = room.val();
+    // console.log(databaseRoom); Object
+    const firebaseQuestions: FirebaseQuestions = databaseRoom.questions ?? {};
+    const parsedQuestions = Object.entries(firebaseQuestions).map(([key, value]) =>{
+      return {
+        id: key,
+        content: value.content,
+        author: value.author,
+        isHighLighted: value.isHighLighted,
+        isAnswered: value.isAnswered,
+      }
+    }) 
+    // console.log(parsedQuestions); Lindo Lindo Array
+    setTitle(databaseRoom.title)
+    setQuestions(parsedQuestions);
+    /* 
+    Object.entries() nos retorna uma matriz em que cada posição do array é composta por chave e valor 
+     Exemplo - parâmetro obj sendo passado, que é um objeto com nome e idade:
+     [["nome", "Gustavo"], ["idade","26"]] 
+     
+     usamos o ?? {} para tratar a possibilidade de recebermos um objeto vazio
+     questions é um DataSnapshot, uma tipagem padrão do firebase então é necessário
+     criar uma tipagem para corrigir a mensagem de erro e entender quais são os dados que estão dentro desse objeto.
+
+     .map(value => {return{}}) - percorremos cada valor dessa iteração, no caso nosso valor vai ser um conjunto,
+     fizemos uma desestruturação já que sabemos que o conjunto é composto por [value[0]= key, value[1]= value]
+     */
+  })
+}, [roomId]);
+
+/*  Estratégia de Event Listener do javascript que está dentro da 
+documentação do Firebase:
+.once - para executar só uma vez.
+.on - para ouvir o evento mais de uma vez.
+*/
 
 async function handleSendQuestion(event: FormEvent) {
   event.preventDefault();
@@ -58,10 +128,10 @@ async function handleSendQuestion(event: FormEvent) {
       </header>
       <main>
         <div className="room-title">
-          <h1>Sala React</h1>
-          <span>4 perguntas</span>
+          <h1>Sala {title}</h1>
+          {questions.length > 0 && <span>{questions.length} pergunta(s)</span>}
         </div>
-
+       {/* && = if, then.    (true)?():() = if, else. */}
         <form onSubmit={handleSendQuestion}>
           <textarea
             placeholder="O que você quer perguntar?"
@@ -81,6 +151,7 @@ async function handleSendQuestion(event: FormEvent) {
             <Button type="submit" disabled={!user}>Enviar pergunta</Button>
           </div>
         </form>
+        {JSON.stringify(questions)}
       </main>
     </div>
   );

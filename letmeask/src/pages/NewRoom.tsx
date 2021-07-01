@@ -30,8 +30,12 @@ export function NewRoom() {
       authorId: user?.id,
     })
     /* jogamos uma nova informação para dentro da nossa referência
+<<<<<<< HEAD
       que foi classificada, categorizada, como rooms.
       push() para Listas de informações e set() para dados Únicos */
+=======
+      que foi classificada, categorizada, como rooms. */
+>>>>>>> 92d4e40 (Aula 03 em andamento NLW#6)
 
       history.push(`/rooms/${firebaseRoom.key}`);
   }

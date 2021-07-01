@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { database } from "../services/firebase";
-
+import { useAuth } from "./useAuth";
 
 type FirebaseQuestions = Record<string, {
   author: {
@@ -11,6 +11,9 @@ type FirebaseQuestions = Record<string, {
   content: string;
   isAnswered: boolean;
   isHighLighted: boolean;
+  likes: Record<string, {
+    authorId: string;
+  }>
 }>
 
 /* para declararmos a tipagem de um objeto no typescript precisamos usar o Record<>
@@ -26,9 +29,13 @@ type QuestionType = {
     content: string;
     isAnswered: boolean;
     isHighLighted: boolean;
+    likeCount: number;
+    likeId: string | undefined;
+    // é possível que não exista nenhum like na pergunta.
 }
 
 export function useRoom(roomId: string) {
+  const { user } = useAuth();
   const [questions, setQuestions] = useState<QuestionType[]>([]);
   /* nosso estado armazena um tipo genérico -> array de questions, é importante atribuirmos um tipo */
   const [title, setTitle] = useState('');
@@ -47,13 +54,22 @@ export function useRoom(roomId: string) {
           content: value.content,
           author: value.author,
           isHighLighted: value.isHighLighted,
-          isAnswered: value.isAnswered,
+          isAnswered: value.isAnswered, 
+          likeCount: Object.values(value.likes ?? {}).length,
+          likeId: Object.entries(value.likes ?? {}).find(([key, like]) => like.authorId === user?.id)?.[0],
+          /* ()?.[0], - Se o usuário não tiver dado like naquela questão ainda o nosso find() não irá retornar nada,
+            "?" esse sinal significa que o javascript irá verificar o retorno do método, caso exista,
+            iremos acessar a posição 0.
+
+            .values quando só precisamos dos valores.
+            .entries para acessar o id.
+            .some() - percorre o array e retorna um booleano com base na condição passada a ela.
+            .find() - percorre o array e retorna um Objeto com o valor. */
         }
       }) 
-      /*  Estratégia de Event Listener do javascript que está dentro da documentação do Firebase:
+      /* Estratégia de Event Listener do javascript que está dentro da documentação do Firebase:
       .once - para executar só uma vez.
-      .on - para ouvir o evento mais de uma vez.
-      */
+      .on - para ouvir o evento mais de uma vez. */
 
       // console.log(parsedQuestions); Lindo Lindo Array
       setTitle(databaseRoom.title)
@@ -71,8 +87,12 @@ export function useRoom(roomId: string) {
        fizemos uma desestruturação já que sabemos que o conjunto é composto por [value[0]= key, value[1]= value]
        */
     })
-  }, [roomId]);
-  
+    return () => {
+      roomRef.off('value');
+    }
+    // removemos todos os eventListeners pra essa referência de sala com base na documentação do firebase
+  }, [roomId, user?.id]);
+  // passamos o user?.id como dependência pro useEffect visto que se trata de uma variável que vem de fora do hook.
   return { questions, title }  
 }
 

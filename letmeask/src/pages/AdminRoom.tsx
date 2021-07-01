@@ -1,14 +1,14 @@
-import { FormEvent, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 import logoImg from '../assets/images/logo.svg'
+import deleteImg from '../assets/images/delete.svg'
 
 import { Button } from '../components/Button';
 import { Question } from '../components/Question';
 import { RoomCode } from '../components/RoomCode';
-import { useAuth } from '../hooks/useAuth';
-import { useRoom } from '../hooks/useRoom';
 import { database } from '../services/firebase';
+// import { useAuth } from '../hooks/useAuth';
+import { useRoom } from '../hooks/useRoom';
 
 import '../styles/room.scss'
 
@@ -17,38 +17,25 @@ type RoomParams = {
 }
 
 export function AdminRoom() {
-const { user } = useAuth();
+// const { user } = useAuth();
+const history = useHistory()
 const params = useParams<RoomParams>();
-const [newQuestion, setNewQuestion] = useState('');
 const roomId = params.id;
 
 const { title, questions } = useRoom(roomId);
 
-async function handleSendQuestion(event: FormEvent) {
-  event.preventDefault();
-  if(newQuestion.trim() === '') {
-    return;
-  }
+async function handleEndRoom() {
+  await database.ref(`rooms/${roomId}`).update({ 
+    endedAt: new Date(),
+  })
 
-  if(!user) {
-    throw new Error('You must be logged in');
-  }
+  history.push('/');
+}
 
-  //declaração de objeto
-  const question = {
-    content: newQuestion,
-    author: {
-      name: user.name,
-      avatar: user.avatar,
-    },
-    isHighLighted: false,
-    isAnswered: false,
-  };
-  
-  //envio para o firebase 
-  await database.ref(`rooms/${roomId}/questions`).push(question);
-  //substitui o valor do estado e reflete a alteração a partir do value do elemento HTML
-  setNewQuestion(''); 
+async function handleDeleteQuestion(questionId: string) {
+  if (window.confirm('Tem certeza que deseja excluir esta pergunta?')) {
+    await database.ref(`rooms/${roomId}/questions/${questionId}`).remove();
+  }
 }
 
   return (
@@ -58,7 +45,7 @@ async function handleSendQuestion(event: FormEvent) {
           <img src={logoImg} alt="Letmeask" />
           <div>
            <RoomCode code={roomId} />
-            <Button isOutlined>Encerrar sala</Button>
+            <Button isOutlined onClick={handleEndRoom}>Encerrar sala</Button>
             {/* propriedade booleana */}
           </div>          
         </div>
@@ -80,7 +67,14 @@ async function handleSendQuestion(event: FormEvent) {
               key={question.id}
               content={question.content}
               author={question.author}
-            />
+            >
+              <button
+                type="button"
+                onClick={() => handleDeleteQuestion(question.id) }
+              >
+                <img src={deleteImg} alt="Remover pergunta" />
+              </button>
+            </Question>
             /* É necessário passarmos a key pro react conseguir identificar as perguntas unicamente
             evitando assim, que após alguma alteração recarregar todo o HTML da página. 
             Estude sobre Algoritmo de reconciliação */

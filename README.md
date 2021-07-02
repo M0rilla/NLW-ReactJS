@@ -28,7 +28,6 @@ Clone o projeto e acesse a pasta do mesmo.
 
 ```bash
 $ git clone https://github.com/M0rilla/NLW-ReactJS.git
-$ cd nlw-06-reactjs
 ```
 
 Para iniciá-lo, siga os passos abaixo:

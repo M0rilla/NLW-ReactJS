@@ -27,17 +27,18 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 Clone o projeto e acesse a pasta do mesmo.
 
 ```bash
-$ git clone https://github.com/rocketseat-education/nlw-06-reactjs
+$ git clone https://github.com/M0rilla/NLW-ReactJS.git
 $ cd nlw-06-reactjs
 ```
 
 Para iniciá-lo, siga os passos abaixo:
 ```bash
 # Instalar as dependências
-$ yarn
+$ yarn | npm
 
 # Iniciar o projeto
-$ yarn start
+$ yarn start | npm start
+
 ```
 O app estará disponível no seu browser pelo endereço http://localhost:3000.
 

@@ -17,7 +17,7 @@ type RoomParams = {
 }
 
 export function Room() {
-  const { user } = useAuth();
+  const { user, signInWithGoogle, signOut } = useAuth();
   const params = useParams<RoomParams>();
   const [newQuestion, setNewQuestion] = useState('');
   const roomId = params.id;
@@ -61,13 +61,14 @@ export function Room() {
       });
     }
   }
-
+  
   return (
     <div id="page-room">
       <header>
         <div className="content">
           <img src={logoImg} alt="Letmeask" />
           <RoomCode code={roomId} />
+          {user && (<Button onClick={signOut}>LogOut</Button>)}
         </div>
       </header>
       <main>
@@ -89,7 +90,7 @@ export function Room() {
                 <span>{user.name}</span>
               </div>
             ) : (
-              <span>Para enviar uma pergunta, <button>faça seu login</button>.</span>
+              <span>Para enviar uma pergunta, <button onClick={signInWithGoogle}>faça seu login</button>.</span>
             )}
             {/* operador ternário, se existir user x,":" se não y. */}
             <Button type="submit" disabled={!user}>Enviar pergunta</Button>

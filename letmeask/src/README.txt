@@ -21,6 +21,19 @@ Quando instalamos pacotes e estamos utilizando typescript precisamos verificar
 se ele foi feito com TS ou nao, caso contrário precisaremos instalar o @types do pacote.
 
 DEPLOYMENT - 
-Quando você tem uma aplicação PWA (progressive web app) no seu app (create-react-app) por
-padrão sempre existe um arquivo chamado service.worker.js que é uma API do browser e seguindo
-a documentação precisa-se cancelar o cache deste arquivo. (Esse app não é PWA)
+Quando você tem uma aplicação PWA (progressive web app) isso torna possível transformar nossa aplicação (create-react-app) 
+em um aplicativo, por padrão sempre existe um arquivo chamado service.worker.js que é uma API do browser e seguindo
+a documentação precisa-se cancelar o cache dest arquivo. (Esse app não é PWA).
+
+ENGENHARIA DE SOFTWARE - 
+Ao criar um projeto precisamos levantar os seguintes pontos:
+- RF: Regras funcionais (o usuário precisa fazer login). *pode ter mais de uma RN
+- RNF: Regras não-funcionais (a autenticação usará Firebase).
+- RN: Regras de negócio (O usuário só poderá se conectar usando uma conta Google). *sempre associada a uma RF
+
+CHALLENGES - 
+- Dark mode. 
+- Styled Components. 
+- Responsividade.
+- Github.
+

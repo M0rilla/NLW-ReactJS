@@ -43,6 +43,8 @@ export function useRoom(roomId: string) {
   useEffect(()=> {
     const roomRef = database.ref(`rooms/${roomId}`);
   
+    // temos 4 tipos de eventos a partir de uma referencia no firebase: value, child_added, child_changed, child_removed
+
     roomRef.on('value', room =>{
       // console.log(room); DataSnapshot
       const databaseRoom = room.val();

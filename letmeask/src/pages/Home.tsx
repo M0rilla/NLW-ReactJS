@@ -16,11 +16,15 @@ import { Button } from '../components/Button';
 import { useAuth } from '../hooks/useAuth';
 
 import '../styles/auth.scss';
+import { useTheme } from '../hooks/useTheme';
 
 export function Home() {
-const history = useHistory();
-const { user, signInWithGoogle } = useAuth();
-const [roomCode, setRoomCode] = useState('');
+
+const history = useHistory()
+const { user, signInWithGoogle } = useAuth()
+const [roomCode, setRoomCode] = useState('')
+const { theme, toggleTheme } = useTheme()
+
 // toda função que começa com "use" é um hook que precisa estar dentro do componente.
 
 async function handleCreateRoom() {
@@ -54,9 +58,8 @@ async function handleJoinRoom(event: FormEvent) {
   history.push(`/rooms/${roomCode}`);
 }
 
-
   return (
-    <div id="page-auth">
+    <div id="page-auth" className={theme}>
       <aside>
         <img src={illustrationImg} alt="Ilustração simbolizando perguntas e respostas" />
         <strong>Crie salas de Q&amp;A ao vivo</strong>
@@ -64,6 +67,7 @@ async function handleJoinRoom(event: FormEvent) {
       </aside>
       <main>
         <div className="main-content">
+          <button onClick={toggleTheme}>Toggle</button>
           <img src={logoImg} alt="Letmeask" />
           <button onClick={handleCreateRoom} className="create-room">
             <img src={googleIconImg} alt="Logo do Google"/>

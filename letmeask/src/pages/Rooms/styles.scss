@@ -1,9 +1,23 @@
+$primary: #29292e;
+$secondary: #e2e2e2;
+
 #page-room {
+  height:100vh;
+  
+  &.dark {
+    background: $primary;
+  }
+
   header {
     padding: 24px;
-    border-bottom: 1px solid #e2e2e2;    
+    border-bottom: 1px solid $primary; 
+    z-index: 1;
 
-    .content {
+    &.dark {
+      background: #c6c6ca;
+    }
+
+    .content {      
       max-width: 1120px;
       margin: 0 auto;
       display: flex;
@@ -17,7 +31,7 @@
 
       > div {
         display:flex;
-        gap: 16px;
+        gap: 20px;
         // gap é uma nova propriedade css que estabelece uma distância entre dois elementos caso eles existam,
         // diferente do margin que o espaço continua existindo independente disso.
 
@@ -26,23 +40,26 @@
           height: 40px;
         }
       }
-
     }
   }
 
   main {
     max-width: 800px;
-    margin: 0 auto;
-
+    margin: 0 auto;    
+    
     .room-title{
       margin: 32px 0 24px;
       display: flex;
-      align-items: center;
+      align-items: center;     
 
       h1 {
         font-family: 'Poppins', sans-serif;
         font-size: 24px;
-        color: #29292e;        
+        color: $primary;
+
+        &.dark {
+          color: $secondary;
+        }
       }
 
       span {
@@ -89,7 +106,13 @@
             color: #29292e;
             font-weight: 500;
             font-size: 14px;
+            
+            &.dark {
+              color: $secondary;
+            }
           }
+
+          
         }
 
         >span {

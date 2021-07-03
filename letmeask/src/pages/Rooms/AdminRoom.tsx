@@ -8,9 +8,13 @@ import answerImg from '../../assets/images/answer.svg';
 import { Button } from '../../components/Button/index';
 import { Question } from '../../components/Question/index';
 import { RoomCode } from '../../components/RoomCode/index';
+import { Theme } from '../../components/Theme';
+
 import { database } from '../../services/firebase';
+
 // import { useAuth } from '../hooks/useAuth';
 import { useRoom } from '../../hooks/useRoom';
+import { useTheme } from '../../hooks/useTheme';
 
 import './styles.scss'
 
@@ -24,6 +28,7 @@ export function AdminRoom() {
   const params = useParams<RoomParams>();
   const roomId = params.id;
 
+  const { theme } = useTheme()
   const { title, questions } = useRoom(roomId);
 
   async function handleEndRoom() {
@@ -62,20 +67,21 @@ export function AdminRoom() {
   }
 
   return (
-    <div id="page-room">
-      <header>
+    <div id="page-room" className={theme}>
+      <header className={theme}>
         <div className="content">
           <img src={logoImg} alt="Letmeask" onClick={() => history.push('/')}/>
-          <div>
+          <div>         
             <RoomCode code={roomId} />
             <Button isOutlined onClick={handleEndRoom}>Encerrar sala</Button>
-            {/* propriedade booleana */}
-          </div>
-        </div>
+            {/* propriedade booleana */}            
+          </div>  
+          <Theme />        
+        </div>        
       </header>
       <main>
         <div className="room-title">
-          <h1>Sala {title}</h1>
+          <h1 className={theme}>Sala {title}</h1>
           {questions.length > 0 && <span>{questions.length} pergunta(s)</span>}
         </div>
         {/* && = if, then.    (true)?():() = if, else. */}
@@ -125,7 +131,7 @@ export function AdminRoom() {
             );
           })}
         </div>
-      </main>
+      </main>      
     </div>
   );
 }

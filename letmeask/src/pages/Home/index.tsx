@@ -13,18 +13,19 @@ nas importações javascript */
 import { database } from '../../services/firebase';
 
 import { Button } from '../../components/Button/index';
+
 import { useAuth } from '../../hooks/useAuth';
+import { useTheme } from '../../hooks/useTheme';
 
 import './styles.scss';
-
-import { useTheme } from '../../hooks/useTheme';
+import { Theme } from '../../components/Theme';
 
 export function Home() {
 
 const history = useHistory()
 const { user, signInWithGoogle } = useAuth()
 const [roomCode, setRoomCode] = useState('')
-const { theme, toggleTheme } = useTheme()
+const { theme } = useTheme()
 
 // toda função que começa com "use" é um hook que precisa estar dentro do componente.
 
@@ -87,10 +88,7 @@ async function handleJoinRoom(event: FormEvent) {
           </form>
         </div>
       </main>
-      <div>
-	        <input onClick={toggleTheme} className="theme-btn" type="checkbox" id="toggle"/>	 
-	        <label htmlFor="toggle"></label>
-        </div>
+      <Theme />
     </div>
   )
 }

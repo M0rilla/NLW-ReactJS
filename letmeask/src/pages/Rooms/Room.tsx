@@ -6,8 +6,11 @@ import logoImg from '../../assets/images/logo.svg'
 import { Button } from '../../components/Button';
 import { Question } from '../../components/Question';
 import { RoomCode } from '../../components/RoomCode';
+import { Theme } from '../../components/Theme';
 import { useAuth } from '../../hooks/useAuth';
 import { useRoom } from '../../hooks/useRoom';
+import { useTheme } from '../../hooks/useTheme';
+
 import { database } from '../../services/firebase';
 
 import './styles.scss'
@@ -20,8 +23,10 @@ export function Room() {
   const { user, signInWithGoogle, signOut } = useAuth();
   const params = useParams<RoomParams>();
   const [newQuestion, setNewQuestion] = useState('');
+  const { theme } = useTheme()
   const history = useHistory();
   const roomId = params.id;
+
 
   const { title, questions } = useRoom(roomId);
 
@@ -64,17 +69,18 @@ export function Room() {
   }
 
   return (
-    <div id="page-room">
-      <header>
+    <div id="page-room" className={theme}>
+      <header className={theme}>
         <div className="content">
           <img src={logoImg} alt="Letmeask" onClick={() => history.push('/')}/>
           <RoomCode code={roomId}/>
           {user && (<Button onClick={signOut}>LogOut</Button>)}
+          <Theme />  
         </div>
       </header>
       <main>
         <div className="room-title">
-          <h1>Sala {title}</h1>
+          <h1 className={theme}>Sala {title}</h1>
           {questions.length > 0 && <span>{questions.length} pergunta(s)</span>}
         </div>
         {/* && = if, then.    (true)?():() = if, else. */}
@@ -88,10 +94,10 @@ export function Room() {
             {user ? (
               <div className="user-info">
                 <img src={user.avatar} alt={user.name} />
-                <span>{user.name}</span>
+                <span className={theme}>{user.name}</span>
               </div>
             ) : (
-              <span>Para enviar uma pergunta, <button onClick={signInWithGoogle}>faça seu login</button>.</span>
+              <span className={theme}>Para enviar uma pergunta, <button onClick={signInWithGoogle}>faça seu login</button>.</span>
             )}
             {/* operador ternário, se existir user x,":" se não y. */}
             <Button type="submit" disabled={!user}>Enviar pergunta</Button>

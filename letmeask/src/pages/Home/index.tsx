@@ -1,22 +1,23 @@
 import { useHistory } from 'react-router-dom'; 
 import { FormEvent, useState } from 'react';
 
-import illustrationImg from '../assets/images/illustration.svg';
-import logoImg from '../assets/images/logo.svg';
-import googleIconImg from '../assets/images/google-icon.svg';
+import illustrationImg from '../../assets/images/illustration.svg';
+import logoImg from '../../assets/images/logo.svg';
+import googleIconImg from '../../assets/images/google-icon.svg';
 
 /* webpack (snowpack, vite, ...)
 Webpack = Module Bundler -> pega a extensão do arquivo e tem algumas
 configurações pré-determinadas pra cada tipo de arquivo ser entendido
 nas importações javascript */
 
-import { database } from '../services/firebase';
+import { database } from '../../services/firebase';
 
-import { Button } from '../components/Button';
-import { useAuth } from '../hooks/useAuth';
+import { Button } from '../../components/Button/index';
+import { useAuth } from '../../hooks/useAuth';
 
-import '../styles/auth.scss';
-import { useTheme } from '../hooks/useTheme';
+import './styles.scss';
+
+import { useTheme } from '../../hooks/useTheme';
 
 export function Home() {
 
@@ -66,8 +67,7 @@ async function handleJoinRoom(event: FormEvent) {
         <p>Tire as dúvidas da sua audiência em tempo real</p>
       </aside>
       <main>
-        <div className="main-content">
-          <button onClick={toggleTheme}>Toggle</button>
+        <div className="main-content">         
           <img src={logoImg} alt="Letmeask" />
           <button onClick={handleCreateRoom} className="create-room">
             <img src={googleIconImg} alt="Logo do Google"/>
@@ -87,6 +87,10 @@ async function handleJoinRoom(event: FormEvent) {
           </form>
         </div>
       </main>
+      <div>
+	        <input onClick={toggleTheme} className="theme-btn" type="checkbox" id="toggle"/>	 
+	        <label htmlFor="toggle"></label>
+        </div>
     </div>
   )
 }

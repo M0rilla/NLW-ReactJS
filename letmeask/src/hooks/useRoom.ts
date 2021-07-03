@@ -16,7 +16,7 @@ type FirebaseQuestions = Record<string, {
   }>
 }>
 
-/* para declararmos a tipagem de um objeto no typescript precisamos usar o Record<>
+/* para declararmos o tipo de um objeto no typescript precisamos usar o Record<>
 que assume a posição de um objeto e dentro dele passamos o tipo da chave e seu valor
 que neste caso era outro objeto; */
 
@@ -82,8 +82,8 @@ export function useRoom(roomId: string) {
        [["nome", "Gustavo"], ["idade","26"]] 
        
        usamos o ?? {} para tratar a possibilidade de recebermos um objeto vazio
-       questions é um DataSnapshot, uma tipagem padrão do firebase então é necessário
-       criar uma tipagem para corrigir a mensagem de erro e entender quais são os dados que estão dentro desse objeto.
+       questions é um DataSnapshot, uum tipo padrão do firebase então é necessário
+       criar um tipo para corrigir a mensagem de erro e entender quais são os dados que estão dentro desse objeto.
   
        .map(value => {return{}}) - percorremos cada valor dessa iteração, no caso nosso valor vai ser um conjunto,
        fizemos uma desestruturação já que sabemos que o conjunto é composto por [value[0]= key, value[1]= value]

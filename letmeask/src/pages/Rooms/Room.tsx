@@ -1,16 +1,16 @@
 import { FormEvent, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
-import logoImg from '../assets/images/logo.svg'
+import logoImg from '../../assets/images/logo.svg'
 
-import { Button } from '../components/Button';
-import { Question } from '../components/Question';
-import { RoomCode } from '../components/RoomCode';
-import { useAuth } from '../hooks/useAuth';
-import { useRoom } from '../hooks/useRoom';
-import { database } from '../services/firebase';
+import { Button } from '../../components/Button';
+import { Question } from '../../components/Question';
+import { RoomCode } from '../../components/RoomCode';
+import { useAuth } from '../../hooks/useAuth';
+import { useRoom } from '../../hooks/useRoom';
+import { database } from '../../services/firebase';
 
-import '../styles/room.scss'
+import './styles.scss'
 
 type RoomParams = {
   id: string;
@@ -20,6 +20,7 @@ export function Room() {
   const { user, signInWithGoogle, signOut } = useAuth();
   const params = useParams<RoomParams>();
   const [newQuestion, setNewQuestion] = useState('');
+  const history = useHistory();
   const roomId = params.id;
 
   const { title, questions } = useRoom(roomId);
@@ -61,13 +62,13 @@ export function Room() {
       });
     }
   }
-  
+
   return (
     <div id="page-room">
       <header>
         <div className="content">
-          <img src={logoImg} alt="Letmeask" />
-          <RoomCode code={roomId} />
+          <img src={logoImg} alt="Letmeask" onClick={() => history.push('/')}/>
+          <RoomCode code={roomId}/>
           {user && (<Button onClick={signOut}>LogOut</Button>)}
         </div>
       </header>

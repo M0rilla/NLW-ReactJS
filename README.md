@@ -12,7 +12,12 @@
     <img alt="Letmeask" src=".github/cover.svg" />
 </h1>
 
-<br>
+<p align="center">
+    Deploy: https://letmeask-2513.firebaseapp.com/
+ </p>
+    Caso acesse a partir do deploy é possível visualizar a interface tanto para visitantes como para o criador da sala alterando a URL para:
+ 
+    - /admin/rooms/ID da Sala/
 
 ## 🧪 Tecnologias
 
@@ -21,6 +26,7 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 - [React](https://reactjs.org)
 - [Firebase](https://firebase.google.com/)
 - [TypeScript](https://www.typescriptlang.org/)
+- [Context API](https://pt-br.reactjs.org/docs/context.html)
 
 ## 🚀 Como executar
 
@@ -45,7 +51,7 @@ Lembrando que será necessário criar uma conta no [Firebase](https://firebase.g
 
 ## 💻 Projeto
 
-Letmeask é perfeito para criadores de conteúdos poderem criar salas de Q&A com o seu público, de uma forma muito organizada e democrática. 
+Letmeask é perfeito para criadores de conteúdos poderem criar salas de Q&A com o seu público, de uma forma muito organizada, democrática e em TEMPO REAL.
 
 Este é um projeto desenvolvido durante a **[Next Level Week Together](https://nextlevelweek.com/)**, apresentada dos dias 20 a 27 de Junho de 2021.
 
